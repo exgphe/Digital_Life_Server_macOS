@@ -33,11 +33,15 @@ class TTService():
         logging.info('Initializing TTS Service for %s...' % char)
         self.hps = utils.get_hparams_from_file(cfg)
         self.speed = speed
+        if torch.backends.mps.is_available():
+            self.device = torch.device("mps")
+        else:
+            self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
         self.net_g = SynthesizerTrn(
             len(symbols),
             self.hps.data.filter_length // 2 + 1,
             self.hps.train.segment_size // self.hps.data.hop_length,
-            **self.hps.model).cuda()
+            **self.hps.model).to(self.device)
         _ = self.net_g.eval()
         _ = utils.load_checkpoint(model, self.net_g, None)
 

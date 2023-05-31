@@ -35,7 +35,7 @@ git clone https://github.com/zixiiu/Digital_Life_Server.git --recursive
    cd "TTS/vits/monotonic_align"
    mkdir monotonic_align
    python setup.py build_ext --inplace
-   cp monotonic_align/*.pyd .
+   cp monotonic_align/* .
    ```
 
 4. Download models  
@@ -47,21 +47,11 @@ git clone https://github.com/zixiiu/Digital_Life_Server.git --recursive
    TTS Model:  
    to `/TTS/models`
 
-5. （对于**没有**Nvidia显卡的电脑，采用cpu来跑的话）需要额外做一步：
-
-   ​	将 Digital_Life_Server\TTS\TTService.py 文件下 36行
-
-   ```
-   self.net_g = SynthesizerTrn(...).cuda()
-   修改为
-   self.net_g = SynthesizerTrn(...).cpu()
-   ```
-
    
 
    > 到这里，项目构建完毕🥰
 
 ### Start the server
    ```bash
-   run-gpt3.5-api.bat
+   ./run-gpt3.5-api.sh
    ```
