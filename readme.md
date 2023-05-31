@@ -8,6 +8,12 @@ For other part of the project, please refer to:
 详细的配置流程可参见[readme_detail.md](readme_detail.md)
 
 ## Getting stuffs ready to roll:
+
+### Install macOS dependencies
+```bash
+brew install portaudio
+```
+
 ### Clone this repo
 ```bash
 git clone https://github.com/zixiiu/Digital_Life_Server.git --recursive
