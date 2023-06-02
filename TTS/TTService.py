@@ -33,10 +33,10 @@ class TTService():
         logging.info('Initializing TTS Service for %s...' % char)
         self.hps = utils.get_hparams_from_file(cfg)
         self.speed = speed
-        if torch.backends.mps.is_available():
-            self.device = torch.device("mps")
-        else:
-            self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+        # if torch.backends.mps.is_available():
+        #     self.device = torch.device("mps")
+        # else:
+        self.device = torch.device("cpu")
         self.net_g = SynthesizerTrn(
             len(symbols),
             self.hps.data.filter_length // 2 + 1,
@@ -48,8 +48,8 @@ class TTService():
     def read(self, text):
         stn_tst = get_text(text, self.hps)
         with torch.no_grad():
-            x_tst = stn_tst.cuda().unsqueeze(0)
-            x_tst_lengths = torch.LongTensor([stn_tst.size(0)]).cuda()
+            x_tst = stn_tst.to(self.device).unsqueeze(0)
+            x_tst_lengths = torch.LongTensor([stn_tst.size(0)]).to(self.device)
             audio = self.net_g.infer(x_tst, x_tst_lengths, noise_scale=.667, noise_scale_w=0.2, length_scale=self.speed)[0][
                 0, 0].data.cpu().float().numpy()
         return audio
